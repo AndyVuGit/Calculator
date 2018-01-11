@@ -18,7 +18,8 @@ using namespace std;
 void evaluation(string input);
 void complexEval(string input);
 void factEval(string input);
-int factorial(int number);
+double factorial(int number);
+double specialSymbol(string input);
 
 //--
 
@@ -29,11 +30,11 @@ int main()
 	cout << "Enter your equation" << endl;
 	getline(cin, input);
 
-	if (!isdigit(input[0]))
+	if (!isdigit(input[0]) && input[0] != 'e')
 	{
 		complexEval(input);
 	}
-	else if (!isdigit(input[1]))
+	else if (!isdigit(input[1]) && input[1] != ' ')
 	{
 		factEval(input);
 	}
@@ -56,12 +57,17 @@ void evaluation(string input)
 
 	int firstNum;
 	int secondNum;
+	string firstNumHolder;
+	string secondNumHolder;
 	string operation;
 
 
-	iss >> firstNum;
+	iss >> firstNumHolder;
 	iss >> operation;
-	iss >> secondNum;
+	iss >> secondNumHolder;
+
+	firstNum = specialSymbol(firstNumHolder);
+	secondNum = specialSymbol(secondNumHolder);
 
 	if (operation == "+")
 	{
@@ -137,7 +143,7 @@ void factEval(string input)
 	}
 }
 
-int factorial(int number)
+double factorial(int number)
 {
 	if (number == 1)
 	{
@@ -149,3 +155,14 @@ int factorial(int number)
 	}
 }
 
+double specialSymbol(string input)
+{
+	if (input == "e")
+	{
+		return 2.71828;
+	}
+	else
+	{
+		return stoi(input);
+	}
+}
