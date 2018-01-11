@@ -17,6 +17,8 @@ using namespace std;
 //--Declaration of Funcs--
 void evaluation(string input);
 void complexEval(string input);
+void factEval(string input);
+int factorial(int number);
 
 //--
 
@@ -30,6 +32,10 @@ int main()
 	if (!isdigit(input[0]))
 	{
 		complexEval(input);
+	}
+	else if (!isdigit(input[1]))
+	{
+		factEval(input);
 	}
 	else
 	{
@@ -111,8 +117,35 @@ void complexEval(string input)
 	{
 		cout << exp(number) << endl;
 	}
+	else if (subInput == "ln(")
+	{
+		cout << log(number) << endl;
+	}
 	else
 	{
 		cerr << "Inappropriate operation" << endl;
 	}
 }
+
+
+void factEval(string input)
+{
+	if (input[1] == '!')
+	{
+		int number = input[0] - '0';
+		cout << factorial(number) << endl;
+	}
+}
+
+int factorial(int number)
+{
+	if (number == 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return number * factorial(number - 1);
+	}
+}
+
