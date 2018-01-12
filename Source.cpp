@@ -15,7 +15,7 @@ using namespace std;
 */
 
 //--Declaration of Funcs--
-void evaluation(string input);
+int evaluation(string input);
 void complexEval(string input);
 void factEval(string input);
 double factorial(int number);
@@ -40,7 +40,7 @@ int main()
 	}
 	else
 	{
-		evaluation(input);
+		cout << evaluation(input);
 	}
 
 	cout << endl << endl;
@@ -49,7 +49,7 @@ int main()
 }
 
 //Function for simple mathematical evaluations
-void evaluation(string input)
+int evaluation(string input)
 {
 	istringstream iss(input);
 	//basic non complex interpretation 
@@ -64,30 +64,56 @@ void evaluation(string input)
 
 	iss >> firstNumHolder;
 	iss >> operation;
-	iss >> secondNumHolder;
+	getline(iss >> ws, secondNumHolder);
 
-	firstNum = specialSymbol(firstNumHolder);
-	secondNum = specialSymbol(secondNumHolder);
+	//firstNum = specialSymbol(firstNumHolder);
+	//secondNum = specialSymbol(secondNumHolder);
+
+	if (secondNumHolder.empty())
+	{
+		return specialSymbol(firstNumHolder);
+	}
 
 	if (operation == "+")
 	{
-		cout << firstNum + secondNum;
+		return evaluation(firstNumHolder) + evaluation(secondNumHolder);
 	}
 	else if (operation == "-")
 	{
-		cout << firstNum - secondNum;
+		return evaluation(firstNumHolder) - evaluation(secondNumHolder);
 	}
 	else if (operation == "*")
 	{
-		cout << firstNum * secondNum;
+		if (secondNumHolder.length() > 1)
+		{
+			return evaluation(to_string(evaluation(firstNumHolder + " " + operation + " " + secondNumHolder[0])) + secondNumHolder.substr(1));
+		}
+		else
+		{
+			return evaluation(firstNumHolder) * evaluation(secondNumHolder);
+		}
 	}
 	else if (operation == "/")
 	{
-		cout << firstNum / secondNum;
+		if (secondNumHolder.length() > 1)
+		{
+			return evaluation(to_string(evaluation(firstNumHolder + " " + operation + " " + secondNumHolder[0])) + secondNumHolder.substr(1));
+		}
+		else
+		{
+			return evaluation(firstNumHolder) / evaluation(secondNumHolder);
+		}
 	}
 	else if (operation == "%")
 	{
-		cout << firstNum % secondNum;
+		if (secondNumHolder.length() > 1)
+		{
+			return evaluation(to_string(evaluation(firstNumHolder + " " + operation + " " + secondNumHolder[0])) + secondNumHolder.substr(1));
+		}
+		else
+		{
+			return evaluation(firstNumHolder) % evaluation(secondNumHolder);
+		}
 	}
 	else
 	{
