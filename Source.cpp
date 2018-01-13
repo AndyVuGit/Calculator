@@ -6,17 +6,18 @@
 using namespace std;
 
 /* Things to do
-1. set up string parsing
-2. set up basic functions
-3. move evaulations to a class or functions
-4. add more complex functions
-4b.change evaluations of the functions into subfunctions using recursion
+DONE 1. set up string parsing
+DONE 2. set up basic functions
+DONE 3. move evaulations to a class or functions
+DONE 4. add more complex functions
+DONE 4b.change evaluations of the functions into subfunctions using recursion
+4c. Make all the evaluation work with each other
 5. Made a graphic UI for calculator
 */
 
 //--Declaration of Funcs--
 int evaluation(string input);
-void complexEval(string input);
+int complexEval(string input);
 void factEval(string input);
 double factorial(int number);
 double specialSymbol(string input);
@@ -30,11 +31,8 @@ int main()
 	cout << "Enter your equation" << endl;
 	getline(cin, input);
 
-	if (!isdigit(input[0]) && input[0] != 'e')
-	{
-		complexEval(input);
-	}
-	else if (!isdigit(input[1]) && input[1] != ' ')
+
+	if (!isdigit(input[1]) && input[input.length() - 1] == '!')
 	{
 		factEval(input);
 	}
@@ -55,8 +53,6 @@ int evaluation(string input)
 	//basic non complex interpretation 
 	//e.g. A + B
 
-	int firstNum;
-	int secondNum;
 	string firstNumHolder;
 	string secondNumHolder;
 	string operation;
@@ -69,12 +65,22 @@ int evaluation(string input)
 	//firstNum = specialSymbol(firstNumHolder);
 	//secondNum = specialSymbol(secondNumHolder);
 
-	if (secondNumHolder.empty())
+	//returns number evaluation of a single input
+	if (!isdigit(firstNumHolder[0]) && firstNumHolder[0] != 'e' && secondNumHolder.empty())
+	{
+		return complexEval(firstNumHolder);
+	}
+	else if (secondNumHolder.empty())
 	{
 		return specialSymbol(firstNumHolder);
 	}
 
-	if (operation == "+")
+	//Check first for complex evaluations then check for simple evaluations 
+	if (!isdigit(firstNumHolder[0]))
+	{
+		return evaluation(to_string(complexEval(firstNumHolder)) + " " + operation + " " + secondNumHolder);
+	}
+	else if (operation == "+")
 	{
 		return evaluation(firstNumHolder) + evaluation(secondNumHolder);
 	}
@@ -119,10 +125,12 @@ int evaluation(string input)
 	{
 		cerr << "Inappropriate operation" << endl;
 	}
+
+	return 0;
 }
 
 //Function for more complex evaluation like sin, cos, tan, etc
-void complexEval(string input)
+int complexEval(string input)
 {
 	//Get a substring of the first 3 characters to determine the evaluation needed
 	string subInput = input.substr(0, 3);
@@ -131,32 +139,34 @@ void complexEval(string input)
 
 	if (subInput == "tan")
 	{
-		cout << tan(number) << endl;
+		return tan(number);
 	}
 	else if (subInput == "cos")
 	{
-		cout << cos(number) << endl;
+		return cos(number);
 	}
 	else if (subInput == "sin")
 	{
-		cout << sin(number) << endl;
+		return sin(number);
 	}
 	else if (subInput == "log")
 	{
-		cout << log(number) << endl;
+		return log(number);
 	}
 	else if (subInput == "EXP")
 	{
-		cout << exp(number) << endl;
+		return exp(number);
 	}
 	else if (subInput == "ln(")
 	{
-		cout << log(number) << endl;
+		return log(number);
 	}
 	else
 	{
 		cerr << "Inappropriate operation" << endl;
 	}
+
+	return 0;
 }
 
 
